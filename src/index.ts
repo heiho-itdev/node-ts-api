@@ -13,7 +13,7 @@ import session from 'express-session'
 const app: express.Express = express()
 
 
-const allowedOrigins = ['http://localhost:3000'];
+const allowedOrigins = ['https://www.sisoto.cloud'];
 
 const corOptions: cors.CorsOptions = {
   origin: allowedOrigins
