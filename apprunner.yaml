@@ -1,9 +1,0 @@
-version: 1.0
-runtime: nodejs12
-build:
-  commands:
-    build:
-      - npm install
-      - npx tsc
-run:
-  command: npm start

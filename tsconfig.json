@@ -10,6 +10,10 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "typeRoots": [
+      "./src/types", // this is where you define your types
+      "./node_modules/@types" //this where npm packages containing types are located
+    ]
   }
 }

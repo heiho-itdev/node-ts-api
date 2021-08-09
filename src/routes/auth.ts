@@ -1,33 +1,7 @@
-import { exception } from "console";
-import { Router } from "express";
+import { exception } from "console"
+import { Router } from "express"
 
-export const router = Router();
-
-
-/**
- * @swagger
- * paths:
- *  /auth/login:
- *   post:
- *     description: return 「hello」
- *     produces:
- *       - application/json
- *     responses:
- *       200:
- *         description:
- */
-router.post('/login', function(req, res) {
-    console.log(req)
-    if(!(req.body.loginid && req.body.password)) {
-        throw new Error('Invalid value')
-    }
-    if(req.body.loginid == "user" && req.body.password == "password") {
-        res.json({access_token:"hello",token:"hello",user:{id:'aaa'}})
-    } else {
-        throw new Error('Invalid value')
-    }
-
-});
+export const router = Router()
 
 /**
  * @swagger
@@ -41,11 +15,17 @@ router.post('/login', function(req, res) {
  *       200:
  *         description:
  */
-router.post('/logout', function(req, res) {
+router.post('/logout', function(req, res, next) {
     //session消す
-    console.log(req)
-    res.json({});
-});
+    console.log('--------------')
+    // console.log(req.headers)
+    req.session.userId = null
+    req.session.token = null
+    req.session._csrf = null
+    console.log('--------------')
+    res.status(200).send({})
+    next()
+})
 
 /**
  * @swagger
@@ -59,12 +39,15 @@ router.post('/logout', function(req, res) {
  *       200:
  *         description:
  */
-router.get('/me', function(req, res) {
+router.get('/me', function(req, res, next) {
+
     //ヘッダーのトークン確認
-    console.log(req.headers.authorization)
-    if(!req.headers.authorization) {
+    if(!req.headers.authorization || !req.session.userId) {
         throw new Error('Invalid value')
     }
-    res.json({access_token:"hello",token:"hello",user:{id:'aaa'}});
-});
+    console.log('sessiontoken='+ req.session.token)
+    console.log('sessionID='+ req.sessionID)
+    res.status(200).send({token: req.session.token, user:{userId:req.session.userId}})
+    next()
+})
 export default router;
